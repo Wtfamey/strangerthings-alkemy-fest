@@ -1,9 +1,12 @@
 {
   "build": {
-    "builder": "NIXPACKS"
+    "builder": "DOCKERFILE",
+    "dockerfilePath": "Dockerfile"
   },
   "deploy": {
-    "startCommand": "php -S 0.0.0.0:10000 -t public/",
-    "healthcheckPath": "/api/events/read.php"
+    "startCommand": "",
+    "healthcheckPath": "/api/events/read.php",
+    "healthcheckTimeout": 100,
+    "restartPolicyType": "ON_FAILURE"
   }
 }
