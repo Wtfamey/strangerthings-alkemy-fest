@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Tv } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 
 interface Sponsor {
   id: number;
@@ -14,7 +14,7 @@ interface TVFrameSponsorsProps {
   sponsors: Sponsor[];
 }
 
-// Individual TV Frame Component
+// Individual TV Frame Component using TVFINAL.png
 function IndividualTVFrame({ sponsor }: { sponsor: Sponsor }) {
   const handleClick = () => {
     if (sponsor.website) {
@@ -32,67 +32,80 @@ function IndividualTVFrame({ sponsor }: { sponsor: Sponsor }) {
       onClick={handleClick}
     >
       {/* TV Frame Container */}
-      <div className="relative bg-gray-900 rounded-lg p-6 border-4 border-gray-700 shadow-2xl hover:border-red-600 transition-all duration-300">
+      <div className="relative bg-gray-900 rounded-lg p-4 border-4 border-gray-700 shadow-2xl hover:border-red-600 transition-all duration-300">
         
-        {/* TV Screen */}
-        <div className="relative bg-black rounded-lg overflow-hidden mb-4" style={{ height: '200px' }}>
-          {/* TV Static Effect */}
-          <div className="absolute inset-0 opacity-10">
-            <div className="w-full h-full bg-gradient-to-br from-red-600 to-blue-600 animate-pulse"></div>
-          </div>
-          
-          {/* Scanlines Effect */}
-          <div className="absolute inset-0 opacity-20 pointer-events-none">
-            <div className="w-full h-full" style={{
-              background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.1) 2px, rgba(255,255,255,0.1) 4px)'
-            }}></div>
-          </div>
-          
-          {/* Sponsor Content */}
-          <div className="relative z-10 flex flex-col items-center justify-center h-full text-white p-4">
-            {/* Sponsor Logo/Placeholder */}
-            <div className="w-16 h-16 bg-red-600/20 border-2 border-red-600 rounded-lg flex items-center justify-center mb-3 group-hover:bg-red-600/40 transition-all">
-              <Tv size={32} className="text-red-400" />
-            </div>
-            
-            {/* Sponsor Name */}
-            <h3 className="text-lg font-bold text-center mb-1 group-hover:text-red-400 transition-colors">
-              {sponsor.name}
-            </h3>
-            
-            {/* Sponsor Description */}
-            {sponsor.description && (
-              <p className="text-xs text-gray-400 text-center group-hover:text-gray-300 transition-colors">
-                {sponsor.description}
-              </p>
-            )}
-          </div>
-          
-          {/* Flicker Effect */}
-          <motion.div
-            className="absolute left-0 w-full h-[2px] z-20"
-            style={{ backgroundColor: '#ef4444', opacity: 0.6 }}
-            animate={{ top: ["0%", "100%"] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+        {/* TV Frame Background - Using TVFINAL.png */}
+        <div className="relative">
+          <img
+            src="/images/TVFINAL.png"
+            alt="TV Frame"
+            className="w-full h-auto object-contain"
           />
+          
+          {/* Sponsor Image Area - Positioned inside the TV screen */}
+          <div
+            className="absolute cursor-pointer group/image"
+            style={{
+              left: '18%',    // Adjust these values to match the TV screen area in your PNG
+              top: '28%',
+              width: '55%',
+              height: '45%',
+              backgroundColor: 'rgba(0, 0, 0, 0.7)',
+              border: '2px solid #ef4444',
+              borderRadius: '8px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              overflow: 'hidden'
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleClick();
+            }}
+          >
+            {/* Sponsor Logo/Image */}
+            {sponsor.logo ? (
+              <img
+                src={sponsor.logo}
+                alt={sponsor.name}
+                className="w-full h-full object-contain p-2"
+              />
+            ) : (
+              <div className="text-center p-4">
+                <div className="w-12 h-12 bg-red-600/30 border-2 border-red-600 rounded-lg flex items-center justify-center mx-auto mb-2 group-hover/image:bg-red-600/50 transition-all">
+                  <ExternalLink size={20} className="text-red-400" />
+                </div>
+                <p className="text-white text-xs font-bold">{sponsor.name}</p>
+                <p className="text-red-400 text-xs mt-1">Add Logo</p>
+              </div>
+            )}
+            
+            {/* Hover Overlay */}
+            <div className="absolute inset-0 bg-red-600/20 opacity-0 group-hover/image:opacity-100 transition-opacity flex items-center justify-center">
+              <div className="text-white text-center">
+                <p className="text-sm font-bold">Visit Website</p>
+                <p className="text-xs">{sponsor.name}</p>
+              </div>
+            </div>
+          </div>
         </div>
         
-        {/* TV Controls */}
-        <div className="flex justify-center gap-2 mb-3">
-          <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
-          <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-          <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-        </div>
-        
-        {/* TV Stand */}
-        <div className="flex justify-center">
-          <div className="w-8 h-4 bg-gray-700 rounded-b-lg"></div>
+        {/* Sponsor Info Below TV */}
+        <div className="text-center mt-4">
+          <h3 className="text-lg font-bold text-white mb-1 group-hover:text-red-400 transition-colors">
+            {sponsor.name}
+          </h3>
+          {sponsor.description && (
+            <p className="text-xs text-gray-400 group-hover:text-gray-300 transition-colors">
+              {sponsor.description}
+            </p>
+          )}
         </div>
         
         {/* Visit Button */}
         {sponsor.website && (
           <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-            <div className="bg-red-600 text-white p-2 rounded-full">
+            <div className="bg-red-600 text-white p-2 rounded-full shadow-lg">
               <ExternalLink size={16} />
             </div>
           </div>
@@ -131,7 +144,7 @@ export function TVFrameSponsors({ sponsors }: TVFrameSponsorsProps) {
 
       {/* TV Frames Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-        {sponsors.map((sponsor, index) => (
+        {sponsors.map((sponsor) => (
           <IndividualTVFrame 
             key={sponsor.id} 
             sponsor={sponsor}
@@ -141,8 +154,8 @@ export function TVFrameSponsors({ sponsors }: TVFrameSponsorsProps) {
 
       {/* Instructions */}
       <div className="text-center mt-12 text-gray-400">
-        <p className="text-sm">Click on any TV to visit the sponsor's website</p>
-        <p className="text-xs mt-2">Each TV frame displays sponsor information</p>
+        <p className="text-sm">Click on any TV screen to visit the sponsor's website</p>
+        <p className="text-xs mt-2">Each TV frame uses TVFINAL.png with sponsor image areas</p>
       </div>
     </div>
   );
@@ -154,36 +167,42 @@ export const defaultSponsors: Sponsor[] = [
     id: 1,
     name: "TechCorp Industries",
     website: "https://techcorp.example.com",
-    description: "Leading technology solutions"
+    description: "Leading technology solutions",
+    logo: "" // Add sponsor logo path here
   },
   {
     id: 2,
     name: "Gaming Zone",
     website: "https://gamingzone.example.com", 
-    description: "Ultimate gaming experience"
+    description: "Ultimate gaming experience",
+    logo: "" // Add sponsor logo path here
   },
   {
     id: 3,
     name: "Music Hub",
     website: "https://musichub.example.com",
-    description: "Your music destination"
+    description: "Your music destination",
+    logo: "" // Add sponsor logo path here
   },
   {
     id: 4,
     name: "Sports Pro",
     website: "https://sportspro.example.com",
-    description: "Professional sports gear"
+    description: "Professional sports gear",
+    logo: "" // Add sponsor logo path here
   },
   {
     id: 5,
     name: "Neon Lights",
     website: "https://neonlights.example.com",
-    description: "Vibrant lighting solutions"
+    description: "Vibrant lighting solutions",
+    logo: "" // Add sponsor logo path here
   },
   {
     id: 6,
     name: "Future Tech",
     website: "https://futuretech.example.com",
-    description: "Tomorrow's technology today"
+    description: "Tomorrow's technology today",
+    logo: "" // Add sponsor logo path here
   }
 ];
