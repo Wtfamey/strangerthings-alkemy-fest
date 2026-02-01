@@ -1,0 +1,270 @@
+@import './fonts.css';
+@import './tailwind.css';
+@import './theme.css';
+
+/* Base responsive styles following iOS/Android guidelines */
+body {
+    font-family: 'Stranger Things', sans-serif;
+    /* Prevent horizontal scroll on mobile */
+    overflow-x: hidden;
+    /* Ensure proper touch scrolling on iOS */
+    -webkit-overflow-scrolling: touch;
+    /* Prevent text size adjustment on orientation change */
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    /* Safe area insets for notched devices */
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+}
+
+/* Responsive breakpoints following Material Design and iOS guidelines */
+/* Mobile: 0-359px */
+@media (max-width: 359px) {
+    html {
+        font-size: 14px;
+    }
+}
+
+/* Mobile Large: 360-479px */
+@media (min-width: 360px) and (max-width: 479px) {
+    html {
+        font-size: 14px;
+    }
+}
+
+/* Tablet Small: 480-599px */
+@media (min-width: 480px) and (max-width: 599px) {
+    html {
+        font-size: 15px;
+    }
+}
+
+/* Tablet Large: 600-839px */
+@media (min-width: 600px) and (max-width: 839px) {
+    html {
+        font-size: 15px;
+    }
+}
+
+/* Desktop Small: 840-1023px */
+@media (min-width: 840px) and (max-width: 1023px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+/* Desktop Large: 1024px+ */
+@media (min-width: 1024px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+/* Mobile-friendly form elements following platform guidelines */
+input, textarea, select, button {
+    /* Prevent zoom on iOS */
+    font-size: 16px;
+    /* Touch-friendly sizing following Material Design (48dp) and iOS (44pt) */
+    min-height: 48px;
+    min-width: 48px;
+    /* Proper spacing for touch targets */
+    margin: 4px 0;
+}
+
+/* Smaller touch targets for constrained spaces */
+input[type="checkbox"], input[type="radio"] {
+    min-height: 44px;
+    min-width: 44px;
+}
+
+/* Responsive images and media */
+img, video {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Responsive tables with horizontal scroll on mobile */
+table {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Responsive containers with proper spacing */
+.container {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 16px; /* 16dp following Material Design */
+    margin: 0 auto;
+}
+
+@media (min-width: 600px) {
+    .container {
+        max-width: 600px;
+        padding: 0 24px; /* 24dp */
+    }
+}
+
+@media (min-width: 840px) {
+    .container {
+        max-width: 840px;
+        padding: 0 24px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .container {
+        max-width: 1024px;
+        padding: 0 24px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1200px;
+    }
+}
+
+@media (min-width: 1440px) {
+    .container {
+        max-width: 1440px;
+    }
+}
+
+/* Utility classes for responsive design */
+.mobile-hidden {
+    display: none;
+}
+
+@media (min-width: 840px) {
+    .mobile-hidden {
+        display: block;
+    }
+}
+
+.desktop-hidden {
+    display: block;
+}
+
+@media (min-width: 840px) {
+    .desktop-hidden {
+        display: none;
+    }
+}
+
+/* Touch-friendly buttons with proper feedback */
+.touch-target {
+    min-height: 48px;
+    min-width: 48px;
+    padding: 12px 16px; /* 12dp padding, 16dp for larger targets */
+    border-radius: 8px; /* Material Design rounded corners */
+    transition: all 0.2s ease;
+    /* Add touch feedback */
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+}
+
+.touch-target:active {
+    transform: scale(0.98);
+    opacity: 0.8;
+}
+
+/* Responsive spacing following 8dp grid system */
+.responsive-padding {
+    padding: clamp(16px, 4vw, 32px);
+}
+
+.responsive-margin {
+    margin: clamp(16px, 4vw, 32px);
+}
+
+/* Responsive grid following Material Design breakpoints */
+.responsive-grid {
+    display: grid;
+    gap: 16px; /* 16dp gutter */
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 600px) {
+    .responsive-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px; /* 24dp gutter */
+    }
+}
+
+@media (min-width: 840px) {
+    .responsive-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .responsive-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+    }
+}
+
+/* Card components following Material Design */
+.card {
+    border-radius: 12px; /* Material Design cards */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+}
+
+.card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Safe area support for iPhone X+ */
+.safe-area-top {
+    padding-top: env(safe-area-inset-top);
+}
+
+.safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+.safe-area-left {
+    padding-left: env(safe-area-inset-left);
+}
+
+.safe-area-right {
+    padding-right: env(safe-area-inset-right);
+}
+
+/* Focus states for accessibility */
+.focus-visible:focus {
+    outline: 2px solid #dc2626;
+    outline-offset: 2px;
+}
+
+/* Smooth scrolling behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Prevent pull-to-refresh on mobile when not needed */
+body {
+    overscroll-behavior-y: contain;
+}
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #dc2626;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #b91c1c;
+}

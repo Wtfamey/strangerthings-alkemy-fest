@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: strangerthings-api
+    runtime: php
+    plan: free
+    buildCommand: "echo 'No build needed for PHP'"
+    startCommand: "php -S 0.0.0.0:10000 -t public/"
+    healthCheckPath: /api/events/read.php
+    envVars:
+      - key: DB_HOST
+        value: localhost
+      - key: DB_NAME
+        value: stranger_things_db
+      - key: DB_USER
+        value: root
+      - key: DB_PASSWORD
+        value: ""
+      - key: DB_PORT
+        value: 5432
+    disk:
+      name: strangerthings-disk
+      mountPath: /var/www/html
+      sizeGB: 1
