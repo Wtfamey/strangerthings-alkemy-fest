@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { StrangerThingsLogo } from './StrangerThingsLogo';
+import { UpsideDownVideo } from './UpsideDownVideo';
 import { useAuth } from '../context/AuthContext';
 import alkemyLogo from '../../assets/alkemy_logo_no_bg.png';
 
@@ -11,6 +12,7 @@ interface HeaderProps {
 export function Header({ onFlip }: HeaderProps) {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showUpsideDownVideo, setShowUpsideDownVideo] = useState(false);
   const location = useLocation();
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
@@ -19,6 +21,15 @@ export function Header({ onFlip }: HeaderProps) {
     const newState = !isFlipped;
     setIsFlipped(newState);
     onFlip(newState);
+    
+    // Show upside down video when flipped
+    if (newState) {
+      setShowUpsideDownVideo(true);
+    }
+  };
+
+  const handleCloseVideo = () => {
+    setShowUpsideDownVideo(false);
   };
 
   const handleLogout = () => {
@@ -296,9 +307,15 @@ export function Header({ onFlip }: HeaderProps) {
           </div>
         </div>
       </div>
+      
+      {/* Upside Down Video Modal */}
+      <UpsideDownVideo isOpen={showUpsideDownVideo} onClose={handleCloseVideo} />
     </>
   );
 }
+
+// Add UpsideDownVideo component after the Header component
+export { UpsideDownVideo };
 
 // Add CSS for the exact Alkemy switch
 const switchStyles = `
