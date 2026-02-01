@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "dev": "vite"
+    "dev": "vite",
+    "start": "php -S 0.0.0.0:10000 -t public/",
+    "railway:start": "php -S 0.0.0.0:10000 -t public/"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",
