@@ -18,7 +18,7 @@ export function LoginPage() {
 
         try {
             console.log("Attempting login for:", email);
-            const response = await fetch('/api/auth/login.php', {
+            const response = await fetch('/strangerthings2026/public/api/auth/login.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

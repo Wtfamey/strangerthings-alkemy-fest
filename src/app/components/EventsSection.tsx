@@ -32,7 +32,7 @@ export function EventsSection() {
     }
 
     try {
-      const response = await fetch('/api/registrations/create.php', {
+      const response = await fetch('/strangerthings2026/public/api/registrations/create.php', {
         method: 'POST',
         body: JSON.stringify({
           user_id: user.id,
@@ -53,7 +53,7 @@ export function EventsSection() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await fetch('/api/events/read.php');
+        const response = await fetch('/strangerthings2026/public/api/events/read.php');
         const data = await response.json();
         
         if (data.records) {
