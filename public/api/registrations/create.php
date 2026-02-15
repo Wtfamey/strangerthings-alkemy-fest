@@ -7,7 +7,9 @@ if(!isset($_SESSION['user_id']) || !$_SESSION['user_id']){
 }
 
 // Get POST data
-include_once '../config/database.php';
+include_once __DIR__ . '/../config/database.php';
+$database = new Database();
+$db = $database->getConnection();
 $data = json_decode(file_get_contents("php://input"));
 
 // Debug: Log the received data

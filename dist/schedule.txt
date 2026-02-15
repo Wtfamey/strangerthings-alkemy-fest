@@ -1,0 +1,53 @@
+# Stranger Things Event Schedule
+
+## Alkemy College Fest 2026
+
+### Day 1 - February 15, 2026
+
+**Technical Events**
+- 9:00 AM - Code Demogorgon (Main Auditorium)
+- 11:00 AM - Web Warriors (CS Lab 1)
+- 2:00 PM - Data Nexus (CS Lab 2)
+- 4:00 PM - AI Workshop (Innovation Lab)
+
+**Cultural Events**
+- 10:00 AM - Music Battle (Open Air Stage)
+- 12:00 PM - Dance Competition (Auditorium)
+- 3:00 PM - Drama Performance (Theater Hall)
+- 6:00 PM - Fashion Show (Main Ground)
+
+### Day 2 - February 16, 2026
+
+**Gaming Events**
+- 10:00 AM - FIFA Tournament (Gaming Zone)
+- 12:00 PM - Valorant Championship (ESports Arena)
+- 2:00 PM - PUBG Mobile (Mobile Gaming)
+- 4:00 PM - Chess Masters (Strategy Room)
+
+**Sports Events**
+- 8:00 AM - Marathon (College Campus)
+- 11:00 AM - Basketball Finals (Sports Complex)
+- 2:00 PM - Cricket Match (Ground)
+- 5:00 PM - Badminton (Indoor Court)
+
+### Day 3 - February 17, 2026
+
+**Workshops & Seminars**
+- 9:00 AM - Machine Learning (Seminar Hall)
+- 11:00 AM - Blockchain Technology (Lab 1)
+- 2:00 PM - Cyber Security (Lab 2)
+- 4:00 PM - Cloud Computing (Auditorium)
+
+**Special Events**
+- 7:00 PM - Closing Ceremony (Main Auditorium)
+- 8:00 PM - Concert (Open Air Stage)
+- 10:00 PM - DJ Night (Party Area)
+
+---
+
+**Contact Information:**
+- Event Coordinators: +91 98765 43210
+- Email: events@alkemy.edu
+- Website: www.alkemyfest.com
+
+**Note:** Schedule subject to change. Follow our social media for updates.
