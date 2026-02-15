@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Details Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0a0e1a;
+            color: white;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #ff0000;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .test-result {
+            margin: 10px 0;
+            padding: 10px;
+            background: #000;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+        .success { color: #00ff00; }
+        .error { color: #ff0000; }
+        button {
+            background: #ff0000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        button:hover {
+            background: #cc0000;
+        }
+        .arcade-cabinet {
+            border: 2px solid;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+        .red { border-color: #ff0000; color: #ff0000; }
+        .green { border-color: #00ff00; color: #00ff00; }
+        .orange { border-color: #ff8800; color: #ff8800; }
+        .cyan { border-color: #00ffff; color: #00ffff; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 Event Details Test</h1>
+        
+        <div class="test-result" id="test-result">
+            Click "Test Event Details" to check if the component loads correctly
+        </div>
+        
+        <button onclick="testEventDetails()">Test Event Details</button>
+        <button onclick="testDirectAPI()">Test Direct API</button>
+        <button onclick="clearCache()">Clear Cache & Reload</button>
+        
+        <div id="arcade-test"></div>
+    </div>
+
+    <script>
+        async function testEventDetails() {
+            const result = document.getElementById('test-result');
+            const arcadeTest = document.getElementById('arcade-test');
+            
+            try {
+                // Test if EventDetailsPage component exists
+                const response = await fetch('/events/1');
+                const text = await response.text();
+                
+                result.innerHTML = `<div class="success">✅ EventDetailsPage route responded</div>`;
+                result.innerHTML += `<div>Response: ${text.substring(0, 200)}...</div>`;
+                
+                // Check if it's the React app or the API
+                if (text.includes('html')) {
+                    result.innerHTML += `<div class="success">✅ React app is serving the page</div>`;
+                } else if (text.includes('Failed to load resource: net::ERR_NAME_NOT_RESOLVED')) {
+                    result.innerHTML += `<div class="error">❌ React DevTools placeholder issue detected</div>`;
+                } else {
+                    result.innerHTML += `<div class="error">❌ Unexpected response: ${text}</div>`;
+                }
+                
+            } catch (error) {
+                result.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+            }
+        }
+        
+        async function testDirectAPI() {
+            const result = document.getElementById('test-result');
+            
+            try {
+                // Test the direct API
+                const response = await fetch('/api/events/read.php?event_type_id=1');
+                const data = await response.json();
+                
+                result.innerHTML = `<div class="success">✅ Direct API working</div>`;
+                result.innerHTML += `<div>Events found: ${data.count}</div>`;
+                result.innerHTML += `<div>Sample event: ${JSON.stringify(data.events?.[0] || {}, null, 2)}</div>`;
+                
+                // Test arcade cabinet display
+                if (data.events && data.events[0]) {
+                    const event = data.events[0];
+                    const color = event.event_type_color || 'purple';
+                    const colorClass = color === 'red' ? 'red' : color === 'green' ? 'green' : color === 'orange' ? 'orange' : 'cyan';
+                    
+                    arcadeTest.innerHTML = `
+                        <div class="arcade-cabinet ${colorClass}">
+                            🎮 Event Details Test
+                            <br>
+                            Event: ${event.title}
+                            <br>
+                            Type: ${event.event_type_name}
+                            <br>
+                            Color: ${color}
+                        </div>
+                    `;
+                }
+                
+            } catch (error) {
+                result.innerHTML += `<div class="error">❌ API Error: ${error.message}</div>`;
+            }
+        }
+        
+        function clearCache() {
+            // Clear browser cache and reload
+            if ('caches' in window) {
+                caches.keys().forEach(cacheName => {
+                    caches.delete(cacheName);
+                });
+            }
+            
+            // Clear service workers
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then(registrations => {
+                    registrations.forEach(registration => {
+                        registration.unregister();
+                    });
+                });
+            }
+            
+            window.location.reload();
+        }
+    </script>
+</body>
+</html>

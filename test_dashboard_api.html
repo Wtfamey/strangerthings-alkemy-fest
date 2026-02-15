@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0a0e1a;
+            color: white;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #ff0000;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .test-result {
+            margin: 10px 0;
+            padding: 10px;
+            background: #000;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .success { color: #00ff00; }
+        .error { color: #ff0000; }
+        button {
+            background: #ff0000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        button:hover {
+            background: #cc0000;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #ff0000;
+        }
+        .stat-label {
+            font-size: 0.9em;
+            color: #ccc;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 Dashboard API Test</h1>
+        
+        <div class="test-result" id="test-result">
+            Click "Test All APIs" to check dashboard stats
+        </div>
+        
+        <button onclick="testAllAPIs()">Test All APIs</button>
+        <button onclick="testDashboardAPI()">Test Dashboard Only</button>
+        <button onclick="testEventsAPI()">Test Events Only</button>
+        <button onclick="testRegistrationsAPI()">Test Registrations Only</button>
+        
+        <div id="stats-display" class="stats-grid"></div>
+    </div>
+
+    <script>
+        async function testAllAPIs() {
+            const result = document.getElementById('test-result');
+            const statsDisplay = document.getElementById('stats-display');
+            
+            try {
+                result.innerHTML = 'Testing all APIs...';
+                
+                const [dashboardRes, eventsRes, regsRes] = await Promise.all([
+                    fetch('/api/dashboard.php'),
+                    fetch('/api/events/read_with_registration.php'),
+                    fetch('/api/registrations/read.php')
+                ]);
+
+                const dashboardData = await dashboardRes.json();
+                const eventsData = await eventsRes.json();
+                const regsData = await regsRes.json();
+
+                console.log('Dashboard API Response:', dashboardData);
+                console.log('Events API Response:', eventsData);
+                console.log('Registrations API Response:', regsData);
+
+                // Display results
+                result.innerHTML = `
+                    <div class="success">✅ All APIs tested successfully</div>
+                    <div>Dashboard Status: ${dashboardData.status || 'Unknown'}</div>
+                    <div>Events Found: ${eventsData.records?.length || 0}</div>
+                    <div>Registrations Found: ${regsData.records?.length || 0}</div>
+                `;
+
+                // Display stats cards
+                const totalEvents = eventsData.records?.length || 0;
+                const totalRegistrations = regsData.records?.length || 0;
+                const totalUsers = dashboardData.dashboard?.users?.total_users || 0;
+                const adminCount = dashboardData.dashboard?.users?.admin_count || 0;
+                const userCount = dashboardData.dashboard?.users?.user_count || 0;
+
+                statsDisplay.innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-number">${totalEvents}</div>
+                        <div class="stat-label">Total Events</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${totalRegistrations}</div>
+                        <div class="stat-label">Total Registrations</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${totalUsers}</div>
+                        <div class="stat-label">Total Users</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${adminCount}</div>
+                        <div class="stat-label">Admin Count</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${userCount}</div>
+                        <div class="stat-label">User Count</div>
+                    </div>
+                `;
+
+            } catch (error) {
+                result.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+                console.error('Test Error:', error);
+            }
+        }
+
+        async function testDashboardAPI() {
+            try {
+                const response = await fetch('/api/dashboard.php');
+                const data = await response.json();
+                document.getElementById('test-result').innerHTML = `<div class="success">✅ Dashboard API: ${JSON.stringify(data, null, 2)}</div>`;
+            } catch (error) {
+                document.getElementById('test-result').innerHTML = `<div class="error">❌ Dashboard Error: ${error.message}</div>`;
+            }
+        }
+
+        async function testEventsAPI() {
+            try {
+                const response = await fetch('/api/events/read_with_registration.php');
+                const data = await response.json();
+                document.getElementById('test-result').innerHTML = `<div class="success">✅ Events API: ${JSON.stringify(data, null, 2)}</div>`;
+            } catch (error) {
+                document.getElementById('test-result').innerHTML = `<div class="error">❌ Events Error: ${error.message}</div>`;
+            }
+        }
+
+        async function testRegistrationsAPI() {
+            try {
+                const response = await fetch('/api/registrations/read.php');
+                const data = await response.json();
+                document.getElementById('test-result').innerHTML = `<div class="success">✅ Registrations API: ${JSON.stringify(data, null, 2)}</div>`;
+            } catch (error) {
+                document.getElementById('test-result').innerHTML = `<div class="error">❌ Registrations Error: ${error.message}</div>`;
+            }
+        }
+    </script>
+</body>
+</html>

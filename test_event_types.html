@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Event Types</title>
+</head>
+<body>
+    <h1>Event Types Debug</h1>
+    <div id="result"></div>
+    
+    <script>
+        fetch('/api/event_types/read.php')
+            .then(response => response.json())
+            .then(data => {
+                const result = document.getElementById('result');
+                result.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            })
+            .catch(error => {
+                document.getElementById('result').innerHTML = 'Error: ' + error.message;
+            });
+    </script>
+</body>
+</html>

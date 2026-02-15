@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Event Types Cleanup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0a0e1a;
+            color: white;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .result {
+            background: #000;
+            border: 1px solid #ff0000;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+        }
+        .success { color: #00ff00; }
+        .error { color: #ff0000; }
+        button {
+            background: #ff0000;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        button:hover {
+            background: #cc0000;
+        }
+        h1 {
+            text-align: center;
+            color: #ff0000;
+        }
+    </style>
+</head>
+<body>
+    <h1>Verify Event Types Cleanup</h1>
+    
+    <button onclick="verifyCleanup()">CHECK EVENT TYPES</button>
+    
+    <div id="result" class="result">Click "CHECK EVENT TYPES" to verify the cleanup...</div>
+    
+    <div style="margin-top: 20px;">
+        <h3>Expected Result:</h3>
+        <p>Exactly 4 event types should remain:</p>
+        <ul>
+            <li>Technical (THE LAB) - Purple</li>
+            <li>Esports (THE ARCADE) - Green</li>
+            <li>Sports (HAWKINS TIGERS) - Red</li>
+            <li>Cultural (SNOW BALL '84) - Cyan</li>
+        </ul>
+        
+        <h3>Next Steps:</h3>
+        <p>If the cleanup is successful:</p>
+        <ul>
+            <li>Refresh the events page - should show exactly 4 arcade cabinets</li>
+            <li>Check admin dashboard - event type dropdown should have 4 options</li>
+            <li><a href="http://localhost:5173/events" style="color: #ff0000;">Go to Events Page</a></li>
+            <li><a href="http://localhost:5173/admin/events" style="color: #ff0000;">Go to Admin Events</a></li>
+        </ul>
+    </div>
+
+    <script>
+        function verifyCleanup() {
+            const result = document.getElementById('result');
+            result.innerHTML = 'Checking event types...\n';
+            
+            fetch('/api/event_types/read.php')
+                .then(response => response.json())
+                .then(data => {
+                    let output = '=== Event Types Verification ===\n\n';
+                    
+                    if (data.success && data.data) {
+                        output += `Total event types found: ${data.data.length}\n\n`;
+                        
+                        if (data.data.length === 4) {
+                            output += '✅ SUCCESS: Exactly 4 event types found!\n\n';
+                        } else {
+                            output += `❌ ISSUE: Expected 4, found ${data.data.length}\n\n`;
+                        }
+                        
+                        output += 'Event Types:\n';
+                        output += '================\n';
+                        
+                        data.data.forEach((type, index) => {
+                            output += `${index + 1}. ${type.name} (${type.color})\n`;
+                            output += `   Subtitle: ${type.subtitle}\n`;
+                            output += `   Events: ${type.event_count || 0}\n`;
+                            output += '----------------\n';
+                        });
+                        
+                        // Check for duplicates
+                        const names = data.data.map(t => t.name);
+                        const uniqueNames = [...new Set(names)];
+                        
+                        if (names.length === uniqueNames.length) {
+                            output += '\n✅ No duplicate names found\n';
+                        } else {
+                            output += '\n❌ Duplicate names detected!\n';
+                        }
+                        
+                    } else {
+                        output += '❌ Failed to load event types\n';
+                        output += 'Error: ' + (data.message || 'Unknown error');
+                    }
+                    
+                    result.innerHTML = output;
+                    result.innerHTML = result.innerHTML
+                        .replace(/✅/g, '<span class="success">✅</span>')
+                        .replace(/❌/g, '<span class="error">❌</span>');
+                })
+                .catch(error => {
+                    result.innerHTML = `<span class="error">Error: ${error.message}</span>`;
+                });
+        }
+    </script>
+</body>
+</html>
